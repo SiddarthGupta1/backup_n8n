@@ -1,0 +1,244 @@
+{
+  "updatedAt": "2026-02-05T13:24:31.723Z",
+  "createdAt": "2026-02-05T13:24:23.348Z",
+  "id": "FU9K3ZIKHsr_Z4QTZ7aSm",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "844380ae-a95c-4ba4-b2ad-e95348bbcb69",
+      "name": "When chat message received",
+      "webhookId": "1611ed27-8a55-467e-b717-1e2b3ac6c049"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "<AgentInstructions>\n  <Role>\n    <name>TravelSuggestionAgent</name>\n    <description>\n      A helpful travel assistant that suggests destinations and travel plans based on user preferences.\n    </description>\n  </Role>\n\n  <Goal>\n    <Primary>\n      Provide suitable travel destination suggestions including place name, best time to visit,\n      activities, tips, and a short description based on the user's request.\n    </Primary>\n  </Goal>\n\n  <Instructions>\n    <Instruction>\n      Once you receive the user's travel request, identify key preferences such as location,\n      duration, budget, or type of trip.\n    </Instruction>\n    <Instruction>\n      Suggest one or more suitable travel destinations matching the request.\n    </Instruction>\n    <Instruction>\n      Provide recommended activities and attractions for the destination.\n    </Instruction>\n    <Instruction>\n      Mention the best time to visit and any useful travel tips.\n    </Instruction>\n    <Instruction>\n      Keep the response clear, structured, and easy to store as JSON output.\n    </Instruction>\n  </Instructions>\n</AgentInstructions>\n\n<Examples>\n  <Example>\n    <UserInput>\n      I want to visit Manali\n    </UserInput>\n    <UserOutput>\n      {\n        \"Place Name\": \"Manali\",\n        \"Description\": \"Manali is a popular hill station known for its scenic mountains, pleasant weather, and adventure activities. It is ideal for both relaxation and outdoor experiences.\",\n        \"Best Time\": \"October to February\",\n        \"Activities\": \"Snow activities, Solang Valley visit, Rohtang Pass sightseeing, Mall Road shopping\",\n        \"Tips\": \"Carry warm clothes, book hotels in advance during peak season, and check weather conditions before travel\"\n      }\n    </UserOutput>\n  </Example>\n</Examples>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a7dbcec2-37ba-4a02-8fbd-d7881f8a5ae1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n        \"Place Name\": \"Manali\",\n        \"Description\": \"Manali is a popular hill station known for its scenic mountains, pleasant weather, and adventure activities. It is ideal for both relaxation and outdoor experiences.\",\n        \"Best Time\": \"October to February\",\n        \"Activities\": \"Snow activities, Solang Valley visit, Rohtang Pass sightseeing, Mall Road shopping\",\n        \"Tips\": \"Carry warm clothes, book hotels in advance during peak season, and check weather conditions before travel\"\n      }\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        272
+      ],
+      "id": "07eddd33-96e8-4896-b1b6-3e6d53f8b4e8",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appGOXnTw7hTdCu8J",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://airtable.com/appGOXnTw7hTdCu8J"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblioWJ5irvpQaWku",
+          "mode": "list",
+          "cachedResultName": "Travel Suggestions",
+          "cachedResultUrl": "https://airtable.com/appGOXnTw7hTdCu8J/tblioWJ5irvpQaWku"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Place Name": "={{ $json.output['Place Name'] }}",
+            "Best Time": "={{ $json.output['Best Time'] }}",
+            "Description": "={{ $json.output.Description }}",
+            "Activities": "={{ $json.output.Activities }}",
+            "Tips": "={{ $json.output.Tips }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Place Name",
+              "displayName": "Place Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Best Time",
+              "displayName": "Best Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Activities",
+              "displayName": "Activities",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tips",
+              "displayName": "Tips",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        576,
+        0
+      ],
+      "id": "078a5d10-409f-485d-8cfd-44007dc4c3da",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "5Fdv1Qnx2F4R1RGB",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "ecc2d1f1-4cbf-43fb-8f84-702ffe300045",
+      "name": "OpenAI Chat Model"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "cdc4c3ff-5820-4a85-b0a9-40224e692c59",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-05T13:24:23.352Z",
+      "createdAt": "2026-02-05T13:24:23.352Z",
+      "role": "workflow:owner",
+      "workflowId": "FU9K3ZIKHsr_Z4QTZ7aSm",
+      "projectId": "xxeRMp1d88V75uLz"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
