@@ -1,0 +1,183 @@
+{
+  "updatedAt": "2026-02-05T12:33:13.663Z",
+  "createdAt": "2026-02-03T18:15:06.996Z",
+  "id": "Ie86QY4gGBV0ou5wXSKKl",
+  "name": "backup_workflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1072,
+        -192
+      ],
+      "id": "8d267e5a-4cd1-417b-b20e-3d251c219998",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -192
+      ],
+      "id": "47a2269c-2123-47bc-9d40-9db424de7342",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "yKKuJTMgmN1Ldza1",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0bc08b55-bb14-4be2-8487-6a6d45fe0b7c",
+              "name": "folder Name",
+              "value": "=Backup_{{ $now.format('yyyy-MM-dd')}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -864,
+        -192
+      ],
+      "id": "b1442d9d-ddf3-402f-afb9-95f845f138bf",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -464,
+        -192
+      ],
+      "id": "276e1509-6cf2-4883-97d8-76fefb113759",
+      "name": "Split workflows"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "871b6833-628e-408a-a4ac-ffa5e0b952e5",
+              "name": "nodes",
+              "value": "={{ JSON.stringify($json,null,2)}}",
+              "type": "string"
+            },
+            {
+              "id": "b6aac1c3-ee86-450b-a076-08ef66b103b2",
+              "name": "fileName",
+              "value": "={{ $json.name }}.json",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        -144
+      ],
+      "id": "4fb20461-4dc5-43fa-89c4-4ac87cb587d1",
+      "name": "prepare file content"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows": {
+      "main": [
+        [
+          {
+            "node": "Split workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split workflows": {
+      "main": [
+        [],
+        [
+          {
+            "node": "prepare file content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5f5b117f-1b8f-46f0-824a-ffd065e6bed0",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-03T18:15:07.004Z",
+      "createdAt": "2026-02-03T18:15:07.004Z",
+      "role": "workflow:owner",
+      "workflowId": "Ie86QY4gGBV0ou5wXSKKl",
+      "projectId": "xxeRMp1d88V75uLz"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
